@@ -1,6 +1,6 @@
 /*
  * File: env_builtins.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
