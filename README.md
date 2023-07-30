@@ -1,6 +1,6 @@
-#Simple Shell
+# Simple Shell
 
-A simple UNIX command interpreter written as part of the low-level programming and algorithm track at Holberton School.
+A simple UNIX command interpreter is written as part of the low-level programming and algorithm track at Holberton School.
 
 ## Description
 
@@ -50,7 +50,7 @@ $
 Upon invocation, **shell** receives and copies the environment of the parent process in which it was executed. This environment is an array of *name-value* strings describing variables in the format *NAME=VALUE*. A few key environmental variables are:
 
 #### HOME
-The home directory of the current user and the default directory argument for the **cd** builtin command.
+The home directory of the current user and the default directory argument for the **cd** built-in command.
 
 ```
 $ echo "echo $HOME" | ./shell
@@ -58,7 +58,7 @@ $ echo "echo $HOME" | ./shell
 ```
 
 #### PWD
-The current working directory as set by the **cd** command.
+The current working directory is set by the **cd** command.
 
 ```
 $ echo "echo $PWD" | ./shell
@@ -66,7 +66,7 @@ $ echo "echo $PWD" | ./shell
 ```
 
 #### OLDPWD
-The previous working directory as set by the **cd** command.
+The previous working directory is set by the **cd** command.
 
 ```
 $ echo "echo $OLDPWD" | ./shell
@@ -83,14 +83,14 @@ $ echo "echo $PATH" | ./shell
 
 ### Command Execution
 
-After receiving a command, **shell** tokenizes it into words using `" "` as a delimiter. The first word is considered the command and all remaining words are considered arguments to that command. **Shell** then proceeds with the following actions:
-1. If the first character of the command is neither a slash (`\`) nor dot (`.`), the shell searches for it in the list of shell builtins. If there exists a builtin by that name, the builtin is invoked.
-2. If the first character of the command is none of a slash (`\`), dot (`.`), nor builtin, **shellby** searches each element of the **PATH** environmental variable for a directory containing an executable file by that name.
+After receiving a command, **shell** tokenizes it into words using `" "` as a delimiter. The first word is considered the command and all remaining words are considered arguments to that command. The **shell** then proceeds with the following actions:
+1. If the first character of the command is neither a slash (`\`) nor a dot (`.`), the shell searches for it in the list of shell builtins. If there exists a built-in by that name, the built-in is invoked.
+2. If the first character of the command is none of a slash (`\`), dot (`.`), nor builtin, **shell** searches each element of the **PATH** environmental variable for a directory containing an executable file by that name.
 3. If the first character of the command is a slash (`\`) or dot (`.`) or either of the above searches was successful, the shell executes the named program with any remaining given arguments in a separate execution environment.
 
 ### Exit Status
 
-**Shell** returns the exit status of the last command executed, with zero indicating success and non-zero indicating failure.
+The **shell** returns the exit status of the last command executed, with zero indicating success and non-zero indicating failure.
 
 If a command is not found, the return status is `127`; if a command is found but is not executable, the return status is 126.
 
@@ -98,9 +98,9 @@ All builtins return zero on success and one or two on incorrect usage (indicated
 
 ### Signals
 
-While running in interactive mode, **shell** ignores the keyboard input `Ctrl+c`. Alternatively, an input of end-of-file (`Ctrl+d`) will exit the program.
+While running in interactive mode, the **shell** ignores the keyboard input `Ctrl+c`. Alternatively, an input of end-of-file (`Ctrl+d`) will exit the program.
 
-User hits `Ctrl+d` in the third line.
+The user hits `Ctrl+d` in the third line.
 ```
 $ ./shell
 $ ^C
@@ -122,7 +122,7 @@ $ echo "echo $PWD" | ./shell
 ```
 
 #### $?
-`?` is substitued with the return value of the last program executed.
+`?` is substituted with the return value of the last program executed.
 
 Example:
 ```
@@ -131,7 +131,7 @@ $ echo "echo $?" | ./shell
 ```
 
 #### $$
-The second `$` is substitued with the current process ID.
+The second `$` is substituted with the current process ID.
 
 Example:
 ```
@@ -141,7 +141,7 @@ $ echo "echo $$" | ./shell
 
 ### Comments
 
-The **shell** ignores all words and characters preceeded by a `#` character on a line.
+The **shell** ignores all words and characters preceded by a `#` character on a line.
 
 Example:
 ```
@@ -169,7 +169,7 @@ $ echo "echo 'hello' ; echo 'world'" | ./shell
 Example:
 ```
 $ echo "error! && echo 'hello'" | ./shell
-./shellby: 1: error!: not found
+./shell: 1: error!: not found
 $ echo "echo 'all good' && echo 'hello'" | ./shell
 'all good'
 'hello'
@@ -181,7 +181,7 @@ $ echo "echo 'all good' && echo 'hello'" | ./shell
 Example:
 ```
 $ echo "error! || echo 'but still runs'" | ./shell
-./shellby: 1: error!: not found
+./shell: 1: error!: not found
 'but still runs'
 ```
 
@@ -193,7 +193,7 @@ The operators `&&` and `||` have equal precedence, followed by `;`.
   * Usage: `cd [DIRECTORY]`
   * Changes the current directory of the process to `DIRECTORY`.
   * If no argument is given, the command is interpreted as `cd $HOME`.
-  * If the argument `-` is given, the command is interpreted as `cd $OLDPWD` and the pathname of the new working directory is printed to standad output.
+  * If the argument `-` is given, the command is interpreted as `cd $OLDPWD`, and the pathname of the new working directory is printed to standard output.
   * If the argument, `--` is given, the command is interpreted as `cd $OLDPWD` but the pathname of the new working directory is not printed.
   * The environment variables `PWD` and `OLDPWD` are updated after a change of directory.
 
@@ -285,4 +285,4 @@ $
 
 ## Acknowledgements
 
-Thia **shell** emulates basic functionality of the **sh** shell. This README borrows form the Linux man pages [sh(1)](https://linux.die.net/man/1/sh) and [dash(1)](https://linux.die.net/man/1/dash).
+This **shell** emulates the basic functionality of the **sh** shell. This README borrows from the Linux man-pages [sh(1)](https://linux.die.net/man/1/sh) and [dash(1)](https://linux.die.net/man/1/dash).
