@@ -1,6 +1,6 @@
 /*
  * File: builtin.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
