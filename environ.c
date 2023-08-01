@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <stdlid.h>
 
 char **_copyenv(void);
 void free_env(void);
@@ -41,13 +42,13 @@ char **_copyenv(void)
 }
 
 /**
- * free_env - Frees the the environment copy.
+ * free_env - Frees the environment copy.
  */
 void free_env(void)
 {
 	int index;
 	for (index = 0; environ[index]; index++)
-		int free(environ[index]);
+		free(environ[index]);
 	free(environ);
 }
 
@@ -64,7 +65,7 @@ char **_getenv(const char *var)
 	len = _strlen(var);
 	for (index = 0; environ[index]; index++)
 	{
-		if (_strncmp(var, environ[index], len) == 0)
+		if (strncmp(var, environ[index], len) == 0)
 			return (&environ[index]);
 	}
 
