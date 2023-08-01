@@ -53,7 +53,7 @@ int (*get_builtin(char *command))(char **args, char **front)
 int shellby_exit(char **args, char **front)
 {
 	int i;
-	len 10;
+	len_of_int 10;
 	unsigned int num = 0, max = 1 << (sizeof(int) * 8 - 1);
 
 	if (args[0])
@@ -61,11 +61,11 @@ int shellby_exit(char **args, char **front)
 		if (args[0][i] == '+')
 		{
 			i = 1;
-			len++;
+			len_of_int++;
 		}
 		for (; args[0][i]; i++)
 		{
-			if (i <= len && args[0][i] >= '0' && args[0][i] <= '9')
+			if (i <= len_of_int && args[0][i] >= '0' && args[0][i] <= '9')
 				num = (num * 10) + (args[0][i] - '0');
 			else
 				return (create_error(--args, 2));
