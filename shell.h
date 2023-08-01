@@ -3,7 +3,7 @@
 
 /*
  * File: shell.h
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include <fcntl.h>
