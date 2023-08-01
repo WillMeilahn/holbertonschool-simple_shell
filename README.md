@@ -222,7 +222,7 @@ Example:
 $ ./hsh
 $ alias show=ls
 $ show
-README.md		builtins_help_1.c	environ.c		errors.c		helpers_2.c		locate.c		shell.h			str_funcs2.c
+AUTHORS		README.md		builtins_help_1.c	environ.c		errors.c		helpers_2.c		locate.c		shell.h			str_funcs2.c
 alias_builtins.c	builtins_help_2.c	err_msgs1.c		getline.c		input_helpers.c		man_1_simple_shell	split.c
 builtin.c		env_builtins.c		err_msgs2.c		helper.c		linkedlist.c		proc_file_comm.c	str_funcs1.c
 ```
