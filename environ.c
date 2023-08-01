@@ -1,8 +1,3 @@
-/*
- * File: environ.c
- * Auth: William A Meilahn
- */
-
 #include "shell.h"
 
 char **_copyenv(void);
