@@ -1,6 +1,6 @@
 /*
  * File: linkedlist.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
@@ -34,8 +34,16 @@ alias_t *add_alias_end(alias_t **head, char *name, char *value)
 		free(new_node);
 		return (NULL);
 	}
-	new_node->value = value;
 	_strcpy(new_node->name, name);
+
+	new_node->value = malloc(sizeof(char) * (_strlen(value) + 1));
+	if (!new_node->value)
+	{
+		free(new_node->name);
+		free(new_node);
+		return (NULL);
+	}
+	_strcpy(new_node->value, value);
 
 	if (*head)
 	{

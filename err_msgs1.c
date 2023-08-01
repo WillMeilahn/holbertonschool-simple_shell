@@ -112,32 +112,41 @@ char *error_2_cd(char **args)
 {
 	char *error, *hist_str;
 	int len;
+	char *arg_copy = _strdup(args[0]);
+
+	if (!arg_copy)
+		return (NULL);
 
 	hist_str = _itoa(hist);
 	if (!hist_str)
+	{
+		free(arg_copy);
 		return (NULL);
+	}
 
-	if (args[0][0] == '-')
-		args[0][2] = '\0';
-	len = _strlen(name) + _strlen(hist_str) + _strlen(args[0]) + 24;
+	if (arg_copy[0] == '-')
+		arg_copy[2] = '\0';
+	len = _strlen(name) + _strlen(hist_str) + _strlen(arg_copy) + 24;
 	error = malloc(sizeof(char) * (len + 1));
 	if (!error)
 	{
 		free(hist_str);
+		free(arg_copy);
 		return (NULL);
 	}
 
 	_strcpy(error, name);
 	_strcat(error, ": ");
 	_strcat(error, hist_str);
-	if (args[0][0] == '-')
+	if (arg_copy[0] == '-')
 		_strcat(error, ": cd: Illegal option ");
 	else
 		_strcat(error, ": cd: can't cd to ");
-	_strcat(error, args[0]);
+	_strcat(error, arg_copy);
 	_strcat(error, "\n");
 
 	free(hist_str);
+	free(arg_copy);
 	return (error);
 }
 

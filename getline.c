@@ -21,43 +21,33 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
  */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
-	void *mem;
-	char *ptr_copy, *filler;
-	unsigned int index;
-
 	if (new_size == old_size)
-		return (ptr);
+		return ptr;
 
 	if (ptr == NULL)
-	{
-		mem = malloc(new_size);
-		if (mem == NULL)
-			return (NULL);
+		return malloc(new_size);
 
-		return (mem);
-	}
-
-	if (new_size == 0 && ptr != NULL)
+	if (new_size == 0)
 	{
 		free(ptr);
-		return (NULL);
+		return NULL;
 	}
 
-	ptr_copy = ptr;
-	mem = malloc(sizeof(*ptr_copy) * new_size);
+	void *mem = malloc(new_size);
 	if (mem == NULL)
 	{
 		free(ptr);
-		return (NULL);
+		return NULL;
 	}
 
-	filler = mem;
+	char *ptr_copy = ptr, *filler = mem;
+	unsigned int index;
 
 	for (index = 0; index < old_size && index < new_size; index++)
 		filler[index] = *ptr_copy++;
 
 	free(ptr);
-	return (mem);
+	return mem;
 }
 
 /**
@@ -69,20 +59,16 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
  */
 void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
 {
-	if (*lineptr == NULL)
+	if (*lineptr == NULL || *n < b)
 	{
 		if (b > 120)
 			*n = b;
 		else
 			*n = 120;
-		*lineptr = buffer;
-	}
-	else if (*n < b)
-	{
-		if (b > 120)
-			*n = b;
-		else
-			*n = 120;
+
+		if (*lineptr != NULL)
+			free(*lineptr);
+
 		*lineptr = buffer;
 	}
 	else
@@ -102,7 +88,7 @@ void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
  */
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-	static ssize_t input;
+	static ssize_t input = 0;
 	ssize_t ret;
 	char c = 'x', *buffer;
 	int r;
@@ -110,12 +96,12 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	if (input == 0)
 		fflush(stream);
 	else
-		return (-1);
+		return -1;
 	input = 0;
 
 	buffer = malloc(sizeof(char) * 120);
 	if (!buffer)
-		return (-1);
+		return -1;
 
 	while (c != '\n')
 	{
@@ -123,7 +109,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		if (r == -1 || (r == 0 && input == 0))
 		{
 			free(buffer);
-			return (-1);
+			return -1;
 		}
 		if (r == 0 && input != 0)
 		{
@@ -144,5 +130,5 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	ret = input;
 	if (r != 0)
 		input = 0;
-	return (ret);
+	return ret;
 }

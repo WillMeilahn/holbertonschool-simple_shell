@@ -1,6 +1,6 @@
 /*
  * File: locate.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
@@ -9,53 +9,8 @@ char *fill_path_dir(char *path);
 list_t *get_path_dir(char *path);
 
 /**
- * get_location - Locates a command in the PATH.
- * @command: The command to locate.
- *
- * Return: If an error occurs or the command cannot be located - NULL.
- *         Otherwise - the full pathname of the command.
- */
-char *get_location(char *command)
-{
-	char **path, *temp;
-	list_t *dirs, *head;
-	struct stat st;
-
-	path = _getenv("PATH");
-	if (!path || !(*path))
-		return (NULL);
-
-	dirs = get_path_dir(*path + 5);
-	head = dirs;
-
-	while (dirs)
-	{
-		temp = malloc(_strlen(dirs->dir) + _strlen(command) + 2);
-		if (!temp)
-			return (NULL);
-
-		_strcpy(temp, dirs->dir);
-		_strcat(temp, "/");
-		_strcat(temp, command);
-
-		if (stat(temp, &st) == 0)
-		{
-			free_list(head);
-			return (temp);
-		}
-
-		dirs = dirs->next;
-		free(temp);
-	}
-
-	free_list(head);
-
-	return (NULL);
-}
-
-/**
  * fill_path_dir - Copies path but also replaces leading/sandwiched/trailing
- *		   colons (:) with current working directory.
+ *		   colons (:) with the current working directory.
  * @path: The colon-separated list of directories.
  *
  * Return: A copy of path with any leading/sandwiched/trailing colons replaced
@@ -70,14 +25,8 @@ char *fill_path_dir(char *path)
 	for (i = 0; path[i]; i++)
 	{
 		if (path[i] == ':')
-		{
-			if (path[i + 1] == ':' || i == 0 || path[i + 1] == '\0')
-				length += _strlen(pwd) + 1;
-			else
-				length++;
-		}
-		else
 			length++;
+		length++;
 	}
 	path_copy = malloc(sizeof(char) * (length + 1));
 	if (!path_copy)
@@ -87,18 +36,9 @@ char *fill_path_dir(char *path)
 	{
 		if (path[i] == ':')
 		{
-			if (i == 0)
-			{
+			if (i == 0 || path[i + 1] == '\0')
 				_strcat(path_copy, pwd);
-				_strcat(path_copy, ":");
-			}
-			else if (path[i + 1] == ':' || path[i + 1] == '\0')
-			{
-				_strcat(path_copy, ":");
-				_strcat(path_copy, pwd);
-			}
-			else
-				_strcat(path_copy, ":");
+			_strcat(path_copy, ":");
 		}
 		else
 		{
@@ -117,9 +57,9 @@ char *fill_path_dir(char *path)
  */
 list_t *get_path_dir(char *path)
 {
-	int index;
 	char **dirs, *path_copy;
 	list_t *head = NULL;
+	int num_dirs = 0;
 
 	path_copy = fill_path_dir(path);
 	if (!path_copy)
@@ -129,9 +69,13 @@ list_t *get_path_dir(char *path)
 	if (!dirs)
 		return (NULL);
 
-	for (index = 0; dirs[index]; index++)
+	// Count the number of directories in the tokenized array
+	while (dirs[num_dirs])
+		num_dirs++;
+
+	for (int i = 0; i < num_dirs; i++)
 	{
-		if (add_node_end(&head, dirs[index]) == NULL)
+		if (add_node_end(&head, dirs[i]) == NULL)
 		{
 			free_list(head);
 			free(dirs);

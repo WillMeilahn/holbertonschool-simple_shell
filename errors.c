@@ -4,6 +4,7 @@
  */
 
 #include "shell.h"
+#include <stdlib.h>
 
 int num_len(int num);
 char *_itoa(int num);
@@ -17,18 +18,9 @@ int create_error(char **args, int err);
  */
 int num_len(int num)
 {
-	unsigned int num1;
 	int len = 1;
+	unsigned int num1 = abs(num);
 
-	if (num < 0)
-	{
-		len++;
-		num1 = num * -1;
-	}
-	else
-	{
-		num1 = num;
-	}
 	while (num1 > 9)
 	{
 		len++;
@@ -48,7 +40,7 @@ char *_itoa(int num)
 {
 	char *buffer;
 	int len = num_len(num);
-	unsigned int num1;
+	unsigned int num1 = abs(num);
 
 	buffer = malloc(sizeof(char) * (len + 1));
 	if (!buffer)
@@ -57,14 +49,7 @@ char *_itoa(int num)
 	buffer[len] = '\0';
 
 	if (num < 0)
-	{
-		num1 = num * -1;
 		buffer[0] = '-';
-	}
-	else
-	{
-		num1 = num;
-	}
 
 	len--;
 	do {
@@ -75,7 +60,6 @@ char *_itoa(int num)
 
 	return (buffer);
 }
-
 
 /**
  * create_error - Writes a custom error message to stderr.
@@ -97,9 +81,9 @@ int create_error(char **args, int err)
 		error = error_1(args);
 		break;
 	case 2:
-		if (*(args[0]) == 'e')
-			error = error_2_exit(++args);
-		else if (args[0][0] == ';' || args[0][0] == '&' || args[0][0] == '|')
+		if (*args[0] == 'e')
+			error = error_2_exit(args + 1);
+		else if (*args[0] == ';' || *args[0] == '&' || *args[0] == '|')
 			error = error_2_syntax(args);
 		else
 			error = error_2_cd(args);
@@ -110,11 +94,13 @@ int create_error(char **args, int err)
 	case 127:
 		error = error_127(args);
 		break;
+	default:
+		return err;
 	}
-	write(STDERR_FILENO, error, _strlen(error));
 
-	if (error)
+	if (error) {
+		write(STDERR_FILENO, error, _strlen(error));
 		free(error);
-	return (err);
-
+	}
+	return err;
 }

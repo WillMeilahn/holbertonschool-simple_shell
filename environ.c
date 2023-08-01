@@ -1,6 +1,9 @@
+/*
+ * File: environ.c
+ * Auth: William A Meilahn
+ */
+
 #include "shell.h"
-#include <stdlib.h>
-#include <string.h>
 
 char **_copyenv(void);
 void free_env(void);
@@ -19,6 +22,7 @@ char **_copyenv(void)
 	int index;
 
 	for (size = 0; environ[size]; size++)
+		;
 
 	new_environ = malloc(sizeof(char *) * (size + 1));
 	if (!new_environ)
@@ -37,20 +41,10 @@ char **_copyenv(void)
 		}
 		_strcpy(new_environ[index], environ[index]);
 	}
+	index--;
 	new_environ[index] = NULL;
 
 	return (new_environ);
-}
-
-/**
- * free_env - Frees the environment copy.
- */
-void free_env(void)
-{
-	int index;
-	for (index = 0; environ[index]; index++)
-		free(environ[index]);
-	free(environ);
 }
 
 /**
@@ -63,10 +57,11 @@ void free_env(void)
 char **_getenv(const char *var)
 {
 	int index, len;
+
 	len = _strlen(var);
 	for (index = 0; environ[index]; index++)
 	{
-		if (strncmp(var, environ[index], len) == 0)
+		if (_strncmp(var, environ[index], len) == 0)
 			return (&environ[index]);
 	}
 

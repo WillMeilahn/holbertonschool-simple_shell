@@ -1,6 +1,6 @@
 /*
  * File: str_funcs2.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
@@ -15,7 +15,7 @@ int _strncmp(const char *s1, const char *s2, size_t n);
  * @s: The string to be searched.
  * @c: The character to be located.
  *
- * Return: If c is found - a pointer to the first occurence.
+ * Return: If c is found - a pointer to the first occurrence.
  *         If c is not found - NULL.
  */
 char *_strchr(char *s, char c)
@@ -77,7 +77,7 @@ int _strcmp(char *s1, char *s2)
 	}
 
 	if (*s1 != *s2)
-		return (*s1 - *s2);
+		return (int)(*s1 - *s2);
 
 	return (0);
 }
@@ -99,9 +99,9 @@ int _strncmp(const char *s1, const char *s2, size_t n)
 	for (i = 0; s1[i] && s2[i] && i < n; i++)
 	{
 		if (s1[i] > s2[i])
-			return (s1[i] - s2[i]);
+			return (int)(s1[i] - s2[i]);
 		else if (s1[i] < s2[i])
-			return (s1[i] - s2[i]);
+			return (int)(s1[i] - s2[i]);
 	}
 	if (i == n)
 		return (0);

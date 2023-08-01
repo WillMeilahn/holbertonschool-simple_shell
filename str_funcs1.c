@@ -1,6 +1,6 @@
 /*
  * File: str_funcs1.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
@@ -46,7 +46,7 @@ char *_strcpy(char *dest, const char *src)
 }
 
 /**
- * _strcat - Concantenates two strings.
+ * _strcat - Concatenates two strings.
  * @dest: Pointer to destination string.
  * @src: Pointer to source string.
  *
@@ -58,7 +58,7 @@ char *_strcat(char *dest, const char *src)
 	const char *srcTemp;
 
 	destTemp = dest;
-	srcTemp =  src;
+	srcTemp = src;
 
 	while (*destTemp != '\0')
 		destTemp++;
@@ -70,11 +70,10 @@ char *_strcat(char *dest, const char *src)
 }
 
 /**
- * _strncat - Concantenates two strings where n number
- *            of bytes are copied from source.
+ * _strncat - Concatenates two strings, copying at most n bytes from the source.
  * @dest: Pointer to destination string.
  * @src: Pointer to source string.
- * @n: n bytes to copy from src.
+ * @n: Number of bytes to copy from src.
  *
  * Return: Pointer to destination string.
  */

@@ -52,36 +52,35 @@ int (*get_builtin(char *command))(char **args, char **front)
  */
 int shellby_exit(char **args, char **front)
 {
-	int i = 0;
-	int len_of_int = 10;
-	unsigned int num = 0, max = 1 << (sizeof(int) * 8 - 1);
+    int i, len_of_int = 10;
+    unsigned int num = 0, max = 1 << (sizeof(int) * 8 - 1);
 
-	if (args[0])
-	{
-		if (args[0][i] == '+')
-		{
-			i = 1;
-			len_of_int++;
-		}
-		for (; args[0][i]; i++)
-		{
-			if (i <= len_of_int && args[0][i] >= '0' && args[0][i] <= '9')
-				num = (num * 10) + (args[0][i] - '0');
-			else
-				return (create_error(args, 2));
-		}
-	}
-	else
-	{
-		return (-3);
-	}
-	if (num > max - 1)
-		return (create_error(args, 2));
-	args++;
-	free_args(args, front);
-	free_env();
-	free_alias_list(aliases);
-	exit(num);
+    if (args[0])
+    {
+        if (args[0][0] == '+')
+        {
+            i = 1;
+            len_of_int++;
+        }
+        for (; args[0][i]; i++)
+        {
+            if (i <= len_of_int && args[0][i] >= '0' && args[0][i] <= '9')
+                num = (num * 10) + (args[0][i] - '0');
+            else
+                return (create_error(--args, 2));
+        }
+    }
+    else
+    {
+        return (-3);
+    }
+    if (num > max - 1)
+        return (create_error(--args, 2));
+    args -= 1;
+    free_args(args, front);
+    free_env();
+    free_alias_list(aliases);
+    exit(num);
 }
 
 /**
@@ -192,7 +191,7 @@ int shellby_help(char **args, char __attribute__((__unused__)) **front)
 	else if (_strcmp(args[0], "help") == 0)
 		help_help();
 	else
-		write(STDERR_FILENO, args[0], _strlen(args[0]));
+		write(STDERR_FILENO, name, _strlen(name));
 
 	return (0);
 }

@@ -1,6 +1,6 @@
 /*
  * File: helper.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
@@ -8,7 +8,7 @@
 void free_args(char **args, char **front);
 char *get_pid(void);
 char *get_env_value(char *beginning, int len);
-void variable_replacement(char **args, int *exe_ret);
+void variable_replacement(char **line, int *exe_ret);
 
 /**
  * free_args - Frees up memory taken by args.
@@ -19,10 +19,16 @@ void free_args(char **args, char **front)
 {
 	size_t i;
 
-	for (i = 0; args[i] || args[i + 1]; i++)
-		free(args[i]);
+	if (args)
+	{
+		for (i = 0; args[i]; i++)
+			free(args[i]);
 
-	free(front);
+		free(args);
+	}
+
+	if (front)
+		free(front);
 }
 
 /**
@@ -38,12 +44,13 @@ char *get_pid(void)
 {
 	size_t i = 0;
 	char *buffer;
-	ssize_t file;
+	ssize_t bytes_read;
+	int file;
 
 	file = open("/proc/self/stat", O_RDONLY);
 	if (file == -1)
 	{
-		perror("Cant read file");
+		perror("Cannot read file");
 		return (NULL);
 	}
 	buffer = malloc(120);
@@ -52,12 +59,18 @@ char *get_pid(void)
 		close(file);
 		return (NULL);
 	}
-	read(file, buffer, 120);
+	bytes_read = read(file, buffer, 120);
+	close(file);
+	if (bytes_read == -1)
+	{
+		free(buffer);
+		perror("Error reading file");
+		return (NULL);
+	}
 	while (buffer[i] != ' ')
 		i++;
 	buffer[i] = '\0';
 
-	close(file);
 	return (buffer);
 }
 
@@ -73,12 +86,13 @@ char *get_pid(void)
  */
 char *get_env_value(char *beginning, int len)
 {
+	char *var = NULL, *replacement = NULL, *temp;
 	char **var_addr;
-	char *replacement = NULL, *temp, *var;
 
 	var = malloc(len + 1);
 	if (!var)
 		return (NULL);
+
 	var[0] = '\0';
 	_strncat(var, beginning, len);
 
@@ -87,12 +101,13 @@ char *get_env_value(char *beginning, int len)
 	if (var_addr)
 	{
 		temp = *var_addr;
-		while (*temp != '=')
+		while (*temp != '=' && *temp)
 			temp++;
-		temp++;
-		replacement = malloc(_strlen(temp) + 1);
-		if (replacement)
-			_strcpy(replacement, temp);
+		if (*temp == '=')
+		{
+			temp++;
+			replacement = _strdup(temp);
+		}
 	}
 
 	return (replacement);
@@ -104,7 +119,7 @@ char *get_env_value(char *beginning, int len)
  * @exe_ret: A pointer to the return value of the last executed command.
  *
  * Description: Replaces $$ with the current PID, $? with the return value
- *              of the last executed program, and envrionmental variables
+ *              of the last executed program, and environmental variables
  *              preceded by $ with their corresponding value.
  */
 void variable_replacement(char **line, int *exe_ret)
@@ -116,7 +131,7 @@ void variable_replacement(char **line, int *exe_ret)
 	for (j = 0; old_line[j]; j++)
 	{
 		if (old_line[j] == '$' && old_line[j + 1] &&
-				old_line[j + 1] != ' ')
+		    old_line[j + 1] != ' ')
 		{
 			if (old_line[j + 1] == '$')
 			{
@@ -130,18 +145,20 @@ void variable_replacement(char **line, int *exe_ret)
 			}
 			else if (old_line[j + 1])
 			{
-				/* extract the variable name to search for */
+				/* Extract the variable name to search for */
 				for (k = j + 1; old_line[k] &&
-						old_line[k] != '$' &&
-						old_line[k] != ' '; k++)
+					     old_line[k] != '$' &&
+					     old_line[k] != ' '; k++)
 					;
 				len = k - (j + 1);
 				replacement = get_env_value(&old_line[j + 1], len);
 			}
-			new_line = malloc(j + _strlen(replacement)
-					  + _strlen(&old_line[k]) + 1);
-			if (!line)
+			new_line = malloc(j + _strlen(replacement) + _strlen(&old_line[k]) + 1);
+			if (!new_line)
+			{
+				free(replacement);
 				return;
+			}
 			new_line[0] = '\0';
 			_strncat(new_line, old_line, j);
 			if (replacement)

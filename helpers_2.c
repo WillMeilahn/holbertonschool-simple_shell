@@ -1,6 +1,6 @@
 /*
  * File: helpers_2.c
- * Auth: William Meilahn
+ * Auth: William A Meilahn 
  */
 
 #include "shell.h"
@@ -102,7 +102,7 @@ void handle_line(char **line, ssize_t read)
 
 /**
  * get_new_len - Gets the new length of a line partitioned
- *               by ";", "||", "&&&", or "#".
+ *               by ";", "||", "&&", or "#".
  * @line: The line to check.
  *
  * Return: The new length of the line.
