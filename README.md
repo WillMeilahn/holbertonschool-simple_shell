@@ -8,52 +8,52 @@ This is a simple UNIX command language interpreter that reads commands from eith
 
 ### Invocation
 
-Usage: **shell** [filename]
+Usage: **hsh** [filename]
 
-To invoke the **shell**, compile all `.c` files in the repository and run the resulting executable:
+To invoke the **hsh**, compile all `.c` files in the repository and run the resulting executable:
 
 ```
-gcc *.c -o shell
-./shell
+gcc *.c -o hsh
+./hsh
 ```
 
-The **shell** can be invoked both interactively and non-interactively. If the shell is invoked with standard input not connected to a terminal, it reads and executes received commands in order.
+The **hsh** can be invoked both interactively and non-interactively. If the shell is invoked with standard input not connected to a terminal, it reads and executes received commands in order.
 
 Example:
 ```
-$ echo "echo 'hello'" | ./shell
+$ echo "echo 'hello'" | ./hsh
 'hello'
 $
 ```
 
-If **shell** is invoked with standard input connected to a terminal (determined by [isatty](https://linux.die.net/man/3/isatty)(3)), an *interactive* shell is opened. When executing interactively, **shell** displays the prompt `$ ` when it is ready to read a command.
+If **hsh** is invoked with standard input connected to a terminal (determined by [isatty](https://linux.die.net/man/3/isatty)(3)), an *interactive* shell is opened. When executing interactively, **hsh** displays the prompt `$ ` when it is ready to read a command.
 
 Example:
 ```
-$./shell
+$./hsh
 $
 ```
 
-Alternatively, if command line arguments are supplied upon invocation, **shell** treats the first argument as a file from which to read commands. The supplied file should contain one command per line. **Shell** runs each of the commands contained in the file in order before exiting.
+Alternatively, if command line arguments are supplied upon invocation, **hsh** treats the first argument as a file from which to read commands. The supplied file should contain one command per line. **hsh** runs each of the commands contained in the file in order before exiting.
 
 Example:
 ```
 $ cat test
 echo 'hello'
-$ ./shell test
+$ ./hsh test
 'hello'
 $
 ```
 
 ### Environment
 
-Upon invocation, **shell** receives and copies the environment of the parent process in which it was executed. This environment is an array of *name-value* strings describing variables in the format *NAME=VALUE*. A few key environmental variables are:
+Upon invocation, **hsh** receives and copies the environment of the parent process in which it was executed. This environment is an array of *name-value* strings describing variables in the format *NAME=VALUE*. A few key environmental variables are:
 
 #### HOME
 The home directory of the current user and the default directory argument for the **cd** built-in command.
 
 ```
-$ echo "echo $HOME" | ./shell
+$ echo "echo $HOME" | ./hsh
 /home/vagrant
 ```
 
@@ -61,15 +61,15 @@ $ echo "echo $HOME" | ./shell
 The current working directory is set by the **cd** command.
 
 ```
-$ echo "echo $PWD" | ./shell
-/home/vagrant/holberton/simple_shell
+$ echo "echo $PWD" | ./hsh
+/home/vagrant/holberton/holbertonschool-simple_shell
 ```
 
 #### OLDPWD
 The previous working directory is set by the **cd** command.
 
 ```
-$ echo "echo $OLDPWD" | ./shell
+$ echo "echo $OLDPWD" | ./hsh
 /home/vagrant/holberton/printf
 ```
 
@@ -77,20 +77,20 @@ $ echo "echo $OLDPWD" | ./shell
 A colon-separated list of directories in which the shell looks for commands. A null directory name in the path (represented by any of two adjacent colons, an initial colon, or a trailing colon) indicates the current directory.
 
 ```
-$ echo "echo $PATH" | ./shell
+$ echo "echo $PATH" | ./hsh
 /home/vagrant/.cargo/bin:/home/vagrant/.local/bin:/home/vagrant/.rbenv/plugins/ruby-build/bin:/home/vagrant/.rbenv/shims:/home/vagrant/.rbenv/bin:/home/vagrant/.nvm/versions/node/v10.15.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/vagrant/.cargo/bin:/home/vagrant/workflow:/home/vagrant/.local/bin
 ```
 
 ### Command Execution
 
-After receiving a command, **shell** tokenizes it into words using `" "` as a delimiter. The first word is considered the command and all remaining words are considered arguments to that command. The **shell** then proceeds with the following actions:
+After receiving a command, **hsh** tokenizes it into words using `" "` as a delimiter. The first word is considered the command and all remaining words are considered arguments to that command. The **hsh** then proceeds with the following actions:
 1. If the first character of the command is neither a slash (`\`) nor a dot (`.`), the shell searches for it in the list of shell builtins. If there exists a built-in by that name, the built-in is invoked.
-2. If the first character of the command is none of a slash (`\`), dot (`.`), nor builtin, **shell** searches each element of the **PATH** environmental variable for a directory containing an executable file by that name.
+2. If the first character of the command is none of a slash (`\`), dot (`.`), nor builtin, **hsh** searches each element of the **PATH** environmental variable for a directory containing an executable file by that name.
 3. If the first character of the command is a slash (`\`) or dot (`.`) or either of the above searches was successful, the shell executes the named program with any remaining given arguments in a separate execution environment.
 
 ### Exit Status
 
-The **shell** returns the exit status of the last command executed, with zero indicating success and non-zero indicating failure.
+The **hsh** returns the exit status of the last command executed, with zero indicating success and non-zero indicating failure.
 
 If a command is not found, the return status is `127`; if a command is found but is not executable, the return status is 126.
 
@@ -98,11 +98,11 @@ All builtins return zero on success and one or two on incorrect usage (indicated
 
 ### Signals
 
-While running in interactive mode, the **shell** ignores the keyboard input `Ctrl+c`. Alternatively, an input of end-of-file (`Ctrl+d`) will exit the program.
+While running in interactive mode, the **hsh** ignores the keyboard input `Ctrl+c`. Alternatively, an input of end-of-file (`Ctrl+d`) will exit the program.
 
 The user hits `Ctrl+d` in the third line.
 ```
-$ ./shell
+$ ./hsh
 $ ^C
 $ ^C
 $
@@ -110,15 +110,15 @@ $
 
 ### Variable Replacement
 
-The **shell** interprets the `$` character for variable replacement.
+The **hsh** interprets the `$` character for variable replacement.
 
 #### $ENV_VARIABLE
 `ENV_VARIABLE` is substituted with its value.
 
 Example:
 ```
-$ echo "echo $PWD" | ./shell
-/home/vagrant/holberton/simple_shell
+$ echo "echo $PWD" | ./hsh
+/home/vagrant/holberton/holbertonschool-simple_shell
 ```
 
 #### $?
@@ -126,7 +126,7 @@ $ echo "echo $PWD" | ./shell
 
 Example:
 ```
-$ echo "echo $?" | ./shell
+$ echo "echo $?" | ./hsh
 0
 ```
 
@@ -135,7 +135,7 @@ The second `$` is substituted with the current process ID.
 
 Example:
 ```
-$ echo "echo $$" | ./shell
+$ echo "echo $$" | ./hsh
 6494
 ```
 
@@ -145,7 +145,7 @@ The **shell** ignores all words and characters preceded by a `#` character on a 
 
 Example:
 ```
-$ echo "echo 'hello' #this will be ignored!" | ./shell
+$ echo "echo 'hello' #this will be ignored!" | ./hsh
 'hello'
 ```
 
@@ -158,7 +158,7 @@ Commands separated by a `;` are executed sequentially.
 
 Example:
 ```
-$ echo "echo 'hello' ; echo 'world'" | ./shell
+$ echo "echo 'hello' ; echo 'world'" | ./hsh
 'hello'
 'world'
 ```
@@ -168,9 +168,9 @@ $ echo "echo 'hello' ; echo 'world'" | ./shell
 
 Example:
 ```
-$ echo "error! && echo 'hello'" | ./shell
-./shell: 1: error!: not found
-$ echo "echo 'all good' && echo 'hello'" | ./shell
+$ echo "error! && echo 'hello'" | ./hsh
+./hsh: 1: error!: not found
+$ echo "echo 'all good' && echo 'hello'" | ./hsh
 'all good'
 'hello'
 ```
@@ -180,7 +180,7 @@ $ echo "echo 'all good' && echo 'hello'" | ./shell
 
 Example:
 ```
-$ echo "error! || echo 'but still runs'" | ./shell
+$ echo "error! || echo 'but still runs'" | ./hsh
 ./shell: 1: error!: not found
 'but still runs'
 ```
@@ -199,15 +199,15 @@ The operators `&&` and `||` have equal precedence, followed by `;`.
 
 Example:
 ```
-$ ./shell
+$ ./hsh
 $ pwd
-/home/vagrant/holberton/simple_shell
+/home/vagrant/holberton/holbertonschool-simple_shell
 $ cd ../
 $ pwd
 /home/vagrant/holberton
 $ cd -
 $ pwd
-/home/vagrant/holberton/simple_shell
+/home/vagrant/holberton/holbertonschool-simple_shell
 ```
 
 #### alias
@@ -219,7 +219,7 @@ $ pwd
 
 Example:
 ```
-$ ./shell
+$ ./hsh
 $ alias show=ls
 $ show
 README.md		builtins_help_1.c	environ.c		errors.c		helpers_2.c		locate.c		shell.h			str_funcs2.c
@@ -235,7 +235,7 @@ builtin.c		env_builtins.c		err_msgs2.c		helper.c		linkedlist.c		proc_file_comm.c
 
 Example:
 ```
-$ ./shell
+$ ./hsh
 $ exit
 ```
 
@@ -245,7 +245,7 @@ $ exit
 
 Example:
 ```
-$ ./shell
+$ ./hsh
 $ env
 NVM_DIR=/home/vagrant/.nvm
 ...
@@ -258,7 +258,7 @@ NVM_DIR=/home/vagrant/.nvm
 
 Example:
 ```
-$ ./shell
+$ ./hsh
 $ setenv NAME Poppy
 $ echo $NAME
 Poppy
@@ -271,7 +271,7 @@ Poppy
 
 Example:
 ```
-$ ./shell
+$ ./hsh
 $ setenv NAME Poppy
 $ unsetenv NAME
 $ echo $NAME
@@ -285,4 +285,4 @@ $
 
 ## Acknowledgements
 
-This **shell** emulates the basic functionality of the **sh** shell. This README borrows from the Linux man-pages [sh(1)](https://linux.die.net/man/1/sh) and [dash(1)](https://linux.die.net/man/1/dash).
+**hsh** emulates the basic functionality of the **sh** shell. This README borrows from the Linux man-pages [sh(1)](https://linux.die.net/man/1/sh) and [dash(1)](https://linux.die.net/man/1/dash).
