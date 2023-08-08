@@ -2,3 +2,6 @@
 betty-doc.pl
 betty-style.pl
 betty.sh
+
+# VSCode
+.vscode/
