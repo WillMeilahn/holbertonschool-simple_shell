@@ -6,9 +6,8 @@ char **_getenv(const char *var);
 
 /**
  *_copyenv - Creates a copy of the environment.
- *
- *Return: If an error occurs - NULL.
- *		  O/w - a double pointer to the new copy.
+ * O/w - a double pointer to the new copy.
+ * Return: If an error occurs - NULL.
  */
 char **_copyenv(void)
 {
@@ -16,9 +15,9 @@ char **_copyenv(void)
 	size_t size;
 	int index;
 
-	for (size = 0 environ[size] size++);
-
-	new_environ = malloc(sizeof(char *) * (size + 1));
+	for (size = 0 environ[size])
+		size++;
+		new_environ = malloc(sizeof(char *) * (size + 1));
 	if (!new_environ)
 		return (NULL);
 
