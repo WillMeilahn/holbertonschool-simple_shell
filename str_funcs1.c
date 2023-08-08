@@ -70,7 +70,8 @@ char *_strcat(char *dest, const char *src)
 }
 
 /**
- * _strncat - Concatenates two strings, copying at most n bytes from the source.
+ * _strncat - Concatenates two strings, copying at most n bytes
+ *			  from the source.
  * @dest: Pointer to destination string.
  * @src: Pointer to source string.
  * @n: Number of bytes to copy from src.

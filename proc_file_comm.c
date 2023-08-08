@@ -7,11 +7,11 @@
 
 /**
 * cant_open - Displays error when file/directory cannot be opened
-* proc_file_commands - partner function to cant_open. internal shenanigans for handling
-* 					   the error and defines the peramiters for the error(s).
+* proc_file_commands - partner function to cant_open. internal shenanigans for
+*					   handling the error and defines the peramiters for the error(s).
 */
 
-char *name;
+char (*name);
 
 int cant_open(char *file_path)
 {
@@ -57,25 +57,22 @@ int proc_file_commands(char *file_path, int *exe_ret)
 	if (file == -1)
 	{
 		*exe_ret = cant_open(file_path);
-		return *exe_ret;
+		return (*exe_ret);
 	}
-
 	while ((b_read = read(file, buffer, 119)) > 0)
 	{
 		buffer[b_read] = '\0';
 		line = _realloc(line, old_size, line_size + b_read + 1);
 		if (!line)
-			return -1;
+			return (-1);
 		_strcat(line, buffer);
 		line_size += b_read;
 		old_size = line_size + 1;
 	}
-
 	close(file);
 
 	if (line)
 		line[line_size] = '\0';
-
 	for (unsigned int i = 0; line[i] == '\n'; i++)
 		line[i] = ' ';
 	for (unsigned int i = 0; i < line_size; i++)
@@ -90,6 +87,7 @@ int proc_file_commands(char *file_path, int *exe_ret)
 	variable_replacement(&line, exe_ret);
 	handle_line(&line, line_size);
 	char **args = _strtok(line, " ");
+
 	free(line);
 	if (!args)
 		return (0);
@@ -116,5 +114,5 @@ int proc_file_commands(char *file_path, int *exe_ret)
 	ret = call_args(args, front, exe_ret);
 
 	free(front);
-	return ret;
+	return (ret);
 }

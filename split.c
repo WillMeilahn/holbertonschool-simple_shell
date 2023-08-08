@@ -70,10 +70,12 @@ char **_strtok(char *line, char *delim)
 		return (NULL);
 
 	int tokens = count_tokens(line, delim);
+
 	if (tokens == 0)
 		return (NULL);
 
 	char **ptr = malloc(sizeof(char *) * (tokens + 1));
+
 	if (!ptr)
 		return (NULL);
 
@@ -85,6 +87,7 @@ char **_strtok(char *line, char *delim)
 		if (*line != *delim)
 		{
 			int letters = token_len(line, delim);
+
 			ptr[t] = malloc(sizeof(char) * (letters + 1));
 			if (!ptr[t])
 			{
