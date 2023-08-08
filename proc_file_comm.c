@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+* cant_open - Displays error when file/directory cannot be opened
+* proc_file_commands - partner function to cant_open. internal shenanigans for handling
+* 					   the error and defines the peramiters for the error(s).
+*/
+
 char *name;
 
 int cant_open(char *file_path)
