@@ -1,6 +1,6 @@
 /*
  * File: helpers_2.c
- * Auth: William A Meilahn 
+ * Auth: William A Meilahn
  */
 
 #include "shell.h"
