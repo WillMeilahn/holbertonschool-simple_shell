@@ -1,8 +1,3 @@
-/*
- * File: environ.c
- * Auth: William A Meilahn
- */
-
 #include "shell.h"
 
 char **_copyenv(void);
@@ -13,7 +8,7 @@ char **_getenv(const char *var);
  * _copyenv - Creates a copy of the environment.
  *
  * Return: If an error occurs - NULL.
- *         O/w - a double pointer to the new copy.
+ *		   O/w - a double pointer to the new copy.
  */
 char **_copyenv(void)
 {
@@ -21,7 +16,7 @@ char **_copyenv(void)
 	size_t size;
 	int index;
 
-	for (size = 0; environ[size] size++);
+	for (size = 0 environ[size] size++);
 
 	new_environ = malloc(sizeof(char *) * (size + 1));
 	if (!new_environ)
@@ -51,7 +46,7 @@ char **_copyenv(void)
  * @var: The name of the environmental variable to get.
  *
  * Return: If the environmental variable does not exist - NULL.
- *         Otherwise - a pointer to the environmental variable.
+ *		   Otherwise - a pointer to the environmental variable.
  */
 char **_getenv(const char *var)
 {
