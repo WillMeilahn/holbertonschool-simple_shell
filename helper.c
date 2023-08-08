@@ -145,11 +145,9 @@ void variable_replacement(char **line, int *exe_ret)
 			}
 			else if (old_line[j + 1])
 			{
-				/* Extract the variable name to search for */
 				for (k = j + 1; old_line[k] &&
-					     old_line[k] != '$' &&
-					     old_line[k] != ' '; k++)
-					;
+					old_line[k] != '$' &&
+					old_line[k] != ' '; k++);
 				len = k - (j + 1);
 				replacement = get_env_value(&old_line[j + 1], len);
 			}

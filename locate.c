@@ -69,7 +69,6 @@ list_t *get_path_dir(char *path)
 	if (!dirs)
 		return (NULL);
 
-	// Count the number of directories in the tokenized array
 	while (dirs[num_dirs])
 		num_dirs++;
 
@@ -84,6 +83,5 @@ list_t *get_path_dir(char *path)
 	}
 
 	free(dirs);
-
 	return (head);
 }

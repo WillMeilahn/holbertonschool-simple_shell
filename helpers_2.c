@@ -161,6 +161,7 @@ ssize_t get_new_len(char *line)
 	}
 	return (new_len);
 }
+
 /**
  * logical_ops - Checks a line for logical operators "||" or "&&".
  * @line: A pointer to the character to check in the line.

@@ -52,35 +52,35 @@ int (*get_builtin(char *command))(char **args, char **front)
  */
 int shellby_exit(char **args, char **front)
 {
-    int i, len_of_int = 10;
-    unsigned int num = 0, max = 1 << (sizeof(int) * 8 - 1);
+	int i, len_of_int = 10;
+	unsigned int num = 0, max = 1 << (sizeof(int) * 8 - 1);
 
-    if (args[0])
-    {
-        if (args[0][0] == '+')
-        {
-            i = 1;
-            len_of_int++;
-        }
-        for (; args[0][i]; i++)
-        {
-            if (i <= len_of_int && args[0][i] >= '0' && args[0][i] <= '9')
-                num = (num * 10) + (args[0][i] - '0');
-            else
-                return (create_error(--args, 2));
-        }
-    }
-    else
-    {
-        return (-3);
-    }
-    if (num > max - 1)
-        return (create_error(--args, 2));
-    args -= 1;
-    free_args(args, front);
-    free_env();
-    free_alias_list(aliases);
-    exit(num);
+	if (args[0])
+	{
+		if (args[0][0] == '+')
+		{
+			i = 1;
+			len_of_int++;
+		}
+		for (; args[0][i]; i++)
+		{
+			if (i <= len_of_int && args[0][i] >= '0' && args[0][i] <= '9')
+				num = (num * 10) + (args[0][i] - '0');
+			else
+				return (create_error(--args, 2));
+		}
+	}
+	else
+	{
+		return (-3);
+	}
+	if (num > max - 1)
+		return (create_error(--args, 2));
+	args -= 1;
+	free_args(args, front);
+	free_env();
+	free_alias_list(aliases);
+	exit(num);
 }
 
 /**
@@ -107,7 +107,7 @@ int shellby_cd(char **args, char __attribute__((__unused__)) **front)
 		if (*(args[0]) == '-' || _strcmp(args[0], "--") == 0)
 		{
 			if ((args[0][1] == '-' && args[0][2] == '\0') ||
-					args[0][1] == '\0')
+				args[0][1] == '\0')
 			{
 				if (_getenv("OLDPWD") != NULL)
 					(chdir(*_getenv("OLDPWD") + 7));
@@ -121,7 +121,7 @@ int shellby_cd(char **args, char __attribute__((__unused__)) **front)
 		else
 		{
 			if (stat(args[0], &dir) == 0 && S_ISDIR(dir.st_mode)
-					&& ((dir.st_mode & S_IXUSR) != 0))
+				&& ((dir.st_mode & S_IXUSR) != 0))
 				chdir(args[0]);
 			else
 			{
