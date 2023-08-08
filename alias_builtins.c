@@ -124,6 +124,7 @@ void print_alias(alias_t *alias)
 	write(STDOUT_FILENO, alias_string, len);
 	free(alias_string);
 }
+
 /**
  * replace_aliases - Goes through the arguments and replace any matching alias
  * with their value.
