@@ -3,10 +3,9 @@
 /**
  * main - prints the environment
  *
- * ac: argument count
- * av: an array of string pointers containing command line arguments
- * env: the environment to be printed
- *
+ * @ac: argument count
+ * @av: an array of string pointers containing command line arguments
+ * @env: the environment to be printed
  * Return: Always 0.
  */
 int main(int ac, char **av, char **env)
