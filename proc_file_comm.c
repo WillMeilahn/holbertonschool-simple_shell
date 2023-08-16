@@ -9,7 +9,10 @@
 * cant_open - Displays error when file/directory cannot be opened
 * proc_file_commands - partner function to cant_open. internal shenanigans for
 *					   handling the error and defines the peramiters for the error(s).
-* @name - the name of the command, file or directory
+* @name: represents a program or script name. Used to construct an error
+*         message that includes the program/script name, along with other
+*         information such as the history value and the file path that
+*         failed to open.
 */
 char (*name);
 
