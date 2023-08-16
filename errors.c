@@ -95,12 +95,13 @@ int create_error(char **args, int err)
 		error = error_127(args);
 		break;
 	default:
-		return err;
+		return (err);
 	}
 
-	if (error) {
+	if (error)
+	{
 		write(STDERR_FILENO, error, _strlen(error));
 		free(error);
 	}
-	return err;
+	return (err);
 }
