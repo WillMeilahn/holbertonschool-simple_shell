@@ -1,5 +1,8 @@
 #include <stdio.h>
 
+ac = argument count
+av = an array of string pointers containing command line arguments
+env = the environment to be printed
 /**
  * main - prints the environment
  *
