@@ -4,4 +4,7 @@ betty-style.pl
 betty.sh
 
 # VSCode
-.vscode/
+.vscode
+
+# dist
+.dist
